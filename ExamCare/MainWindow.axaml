@@ -1,6 +1,7 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:vm="using:ExamCare.ViewModels"
 		xmlns:conv="using:ExamCare.Converters"
+		xmlns:views="clr-namespace:ExamCare.Views"
         xmlns:model="using:ExamCare.Models"
 		xmlns:md="clr-namespace:LiveMarkdown.Avalonia;assembly=LiveMarkdown.Avalonia"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -9,6 +10,7 @@
         Title="ExamCare"
         Width="1000" Height="650">
 
+	<ContentControl Content="{Binding CurrentView}"/>
 
 	
 	<Window.Resources>

@@ -1,0 +1,70 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="ExamCare.Views.LoginView">
+
+	<UserControl.Background>
+		<LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+			<GradientStop Color="#0f2027" Offset="0" />
+			<GradientStop Color="#203a43" Offset="0.5" />
+			<GradientStop Color="#2c5364" Offset="1" />
+		</LinearGradientBrush>
+	</UserControl.Background>
+
+	<Grid>
+		<Border Width="380"
+                Background="#66000000"
+                CornerRadius="20"
+                Padding="40"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+			<StackPanel Spacing="20">
+
+				<TextBlock Text="Avanolia"
+                           FontSize="40"
+                           FontWeight="Light"
+                           Foreground="White"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,5"/>
+
+				<TextBlock Text="Sign in to your exam session"
+                           FontSize="14"
+                           Foreground="#A0A0A0"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
+
+				<TextBox x:Name="ExamCodeInput"
+                         Watermark="Exam Code"
+                         Padding="12"
+                         FontSize="14"/>
+
+				<TextBox x:Name="UsernameInput"
+                         Watermark="Username"
+                         Padding="12"
+                         FontSize="14"/>
+
+				<TextBox x:Name="PasswordInput"
+                         Watermark="Password"
+                         Padding="12"
+                         FontSize="14"/>
+
+				<Button x:Name="LoginButton"
+                        Content="LOGIN"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Background="#D4AF37"
+                        Foreground="Black"
+                        FontWeight="Bold"
+                        Padding="12"
+                        Margin="0,20,0,0"/>
+
+				<Button Content="Forgot Password?"
+                        Background="Transparent"
+                        Foreground="#A0A0A0"
+                        HorizontalAlignment="Center"
+                        Margin="0,10,0,0"/>
+
+			</StackPanel>
+		</Border>
+	</Grid>
+</UserControl>

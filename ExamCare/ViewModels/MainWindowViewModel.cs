@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using ExamCare.Helpers;
 using ExamCare.Models;
 using ExamCare.Services;
+using ExamCare.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,6 +16,8 @@ namespace ExamCare.ViewModels
 {
     public partial class MainWindowViewModel : ObservableObject
     {
+        public Action? CloseAction { get; set; }
+        private bool _isSubmitting;
         private readonly StudentExamApiService _studentExamApiService;
 
         private Dictionary<int, AttemptQuestion> _attemptQuestionMap = new();
@@ -43,8 +46,12 @@ namespace ExamCare.ViewModels
         private DispatcherTimer? _timer;
         private TimeSpan _timeLeft;
 
+        [ObservableProperty]
+        private object currentView;
+
         public MainWindowViewModel()
         {
+             CurrentView = new LoginView();
             _studentExamApiService = new StudentExamApiService();
             _ = LoadExamAsync();
         }
@@ -372,13 +379,30 @@ namespace ExamCare.ViewModels
                 Debug.WriteLine($"TimeSpent: {attemptQuestion.TimeSpent}");
                 Debug.WriteLine($"LogCount: {attemptQuestion.AnswerLogs.Count}");
             }
-             await _studentExamApiService.SendAttemptMapAsync(_attemptQuestionMap);
+            if (_isSubmitting) return; 
+
+            _isSubmitting = true;
+
+            try
+            {
+                await _studentExamApiService.SendAttemptMapAsync(_attemptQuestionMap);
+
+                CloseAction?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Submit lỗi: " + ex.Message);
+            }
+            finally
+            {
+                _isSubmitting = false;
+            }
 
 
         }
         private async Task LoadExamAsync()
         {   
-            var response = await _studentExamApiService.StartExamAsync(1, 1);
+            var response = await _studentExamApiService.StartExamAsync(1, 3);
             var examData = response?.Data;
 
             if (examData == null || examData.Questions == null || examData.Questions.Count == 0)
