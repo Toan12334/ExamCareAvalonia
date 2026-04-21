@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using ExamCare.ViewModels;
-using LiveMarkdown.Avalonia;
 
 namespace ExamCare
 {
@@ -8,9 +7,15 @@ namespace ExamCare
     {
         public MainWindow()
         {
-            InitializeComponent();        
+            InitializeComponent();
+
             var vm = new MainWindowViewModel();
+
+            // 👉 cho phép ViewModel đóng app
             vm.CloseAction = () => this.Close();
+
+            // 👉 QUAN TRỌNG: truyền vm vào Login
+            vm.Init();
 
             DataContext = vm;
         }
