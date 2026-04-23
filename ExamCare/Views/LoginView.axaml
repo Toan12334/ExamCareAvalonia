@@ -1,6 +1,8 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="ExamCare.Views.LoginView">
+             xmlns:vm="using:ExamCare.ViewModels"
+             x:Class="ExamCare.Views.LoginView"
+             x:DataType="vm:LoginViewModel">
 
 	<UserControl.Background>
 		<LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
@@ -33,23 +35,28 @@
                            HorizontalAlignment="Center"
                            Margin="0,0,0,20"/>
 
-				<TextBox x:Name="ExamCodeInput"
+				<TextBox Text="{Binding ExamCode}"
                          Watermark="Exam Code"
                          Padding="12"
                          FontSize="14"/>
 
-				<TextBox x:Name="UsernameInput"
-                         Watermark="Username"
+				<TextBox Text="{Binding Email}"
+                         Watermark="Email"
                          Padding="12"
                          FontSize="14"/>
 
-				<TextBox x:Name="PasswordInput"
+				<TextBox Text="{Binding Password}"
                          Watermark="Password"
+                         PasswordChar="*"
                          Padding="12"
                          FontSize="14"/>
 
-				<Button x:Name="LoginButton"
-                        Content="LOGIN"
+				<TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="Red"
+                           TextWrapping="Wrap"/>
+
+				<Button Content="LOGIN"
+                        Command="{Binding LoginCommand}"
                         HorizontalAlignment="Stretch"
                         HorizontalContentAlignment="Center"
                         Background="#D4AF37"

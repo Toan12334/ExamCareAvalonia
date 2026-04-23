@@ -45,9 +45,9 @@ namespace ExamCare.ViewModels
         private DispatcherTimer? _timer;
         private TimeSpan _timeLeft;
 
-        public DashboardViewModel(Action? onSubmitSuccess = null)
+        public DashboardViewModel(StudentExamApiService apiService, Action? onSubmitSuccess = null)
         {
-            _studentExamApiService = new StudentExamApiService();
+            _studentExamApiService = apiService;
             _onSubmitSuccess = onSubmitSuccess;
 
             _ = LoadExamAsync();
@@ -56,7 +56,6 @@ namespace ExamCare.ViewModels
         private void StartCountdown()
         {
             _timeLeft = TimeSpan.FromMinutes(Duration);
-
             CountdownText = _timeLeft.ToString(@"hh\:mm\:ss");
 
             _timer = new DispatcherTimer
@@ -64,21 +63,38 @@ namespace ExamCare.ViewModels
                 Interval = TimeSpan.FromSeconds(1)
             };
 
-            _timer.Tick += (s, e) =>
+            _timer.Tick += async (s, e) =>
             {
-                if (_timeLeft.TotalSeconds > 0)
-                {
-                    _timeLeft = _timeLeft.Subtract(TimeSpan.FromSeconds(1));
-                    CountdownText = _timeLeft.ToString(@"hh\:mm\:ss");
-                }
-                else
+                _timeLeft = _timeLeft.Subtract(TimeSpan.FromSeconds(1));
+
+                if (_timeLeft.TotalSeconds <= 0)
                 {
                     _timer?.Stop();
-                    CountdownText = "Hết giờ!";
+                    CountdownText = "Hết giờ! Đang nộp bài...";
+
+                    await SubmitWhenTimeoutAsync();
+                    return;
                 }
+
+                CountdownText = _timeLeft.ToString(@"hh\:mm\:ss");
             };
 
             _timer.Start();
+        }
+
+
+        private async Task SubmitWhenTimeoutAsync()
+        {
+            if (_isSubmitting) return;
+
+            try
+            {
+                await Submit(); // dùng lại hàm Submit bạn đã viết
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Auto submit lỗi: " + ex.Message);
+            }
         }
 
         [RelayCommand]
@@ -383,7 +399,8 @@ namespace ExamCare.ViewModels
             try
             {
                 await _studentExamApiService.SendAttemptMapAsync(_attemptQuestionMap);
-                _onSubmitSuccess?.Invoke();
+                _onSubmitSuccess?.Invoke(); 
+                
             }
             catch (Exception ex)
             {
@@ -397,7 +414,7 @@ namespace ExamCare.ViewModels
 
         private async Task LoadExamAsync()
         {
-            var response = await _studentExamApiService.StartExamAsync(1, 3);
+            var response = await _studentExamApiService.StartExamAsync();
             var examData = response?.Data;
 
             if (examData == null || examData.Questions == null || examData.Questions.Count == 0)

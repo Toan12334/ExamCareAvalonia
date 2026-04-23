@@ -1,6 +1,6 @@
 ﻿using Avalonia.Controls;
 using ExamCare.ViewModels;
-
+using ExamCare.Services;
 namespace ExamCare
 {
     public partial class MainWindow : Window
@@ -8,8 +8,8 @@ namespace ExamCare
         public MainWindow()
         {
             InitializeComponent();
-
-            var vm = new MainWindowViewModel();
+            var _studentService = new StudentExamApiService();
+            var vm = new MainWindowViewModel(_studentService);
 
             // 👉 cho phép ViewModel đóng app
             vm.CloseAction = () => this.Close();
