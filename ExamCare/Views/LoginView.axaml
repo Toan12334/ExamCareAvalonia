@@ -3,6 +3,7 @@
              xmlns:vm="using:ExamCare.ViewModels"
              x:Class="ExamCare.Views.LoginView"
              x:DataType="vm:LoginViewModel">
+	         
 
 	<UserControl.Background>
 		<LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
