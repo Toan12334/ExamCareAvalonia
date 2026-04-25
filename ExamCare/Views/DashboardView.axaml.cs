@@ -7,6 +7,7 @@ namespace ExamCare.Views
         public DashboardView()
         {
             InitializeComponent();
+
         }
 
         private void InitializeComponent()

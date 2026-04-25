@@ -8,11 +8,13 @@ namespace ExamCare.ViewModels
     public partial class MainWindowViewModel : ObservableObject
     {
         private readonly StudentExamApiService _apiService;
+        public Action<bool>? FullscreenAction { get; set; }
+        public Action? CloseAction { get; set; }
 
         [ObservableProperty]
         private object? currentView;
 
-        public Action? CloseAction { get; set; }
+       
 
         public MainWindowViewModel(StudentExamApiService apiService)
         {
@@ -29,6 +31,7 @@ namespace ExamCare.ViewModels
 
         public void ShowDashboard()
         {
+            FullscreenAction?.Invoke(true);
             CurrentView = new DashboardView
             {
                 DataContext = new DashboardViewModel(
