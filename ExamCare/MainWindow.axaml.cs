@@ -13,7 +13,7 @@ namespace ExamCare
 
             // 👉 cho phép ViewModel đóng app
             vm.CloseAction = () => this.Close();
-            vm.FullscreenAction = (isFull) =>
+            vm.HandleWindow = (isFull) =>
             {
                 this.WindowState = isFull ? WindowState.FullScreen : WindowState.Normal;
                 this.Topmost = isFull; // Đảm bảo cửa sổ luôn ở trên cùng khi fullscreen
